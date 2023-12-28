@@ -1,4 +1,4 @@
-class ApiError extends Error {
+class ApiError extends Error {    // Error is class which is provided by nodejs , and here we are extending using inheritence Error class into new class C
     constructor(
         statusCode,
         message= "Something went wrong",
