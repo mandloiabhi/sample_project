@@ -11,8 +11,11 @@ app.use(express.urlencoded({limit:"16kb",extended:true}))   // it is saying for 
 app.use(express.static("public"))
 app.use(cookieParser())
 
-// routes imports
 
+app.use(express.json()) // for parsing application/json
+app.use(express.urlencoded({ extended: true }))
+// routes imports
+// app.use(express.json())
 import userRouter from './routes/user.routes.js'
 
 // routes declaration
