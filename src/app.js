@@ -20,6 +20,7 @@ import userRouter from './routes/user.routes.js'
 
 // routes declaration
 // now we are using  middle ware  as in form of app.use( )  
+app.get("/arun",(req,res)=>{res.send('virat')});
 app.use("/api/v1/users",userRouter);
 
 // http://localhost:8000/api/v1/users/register   
