@@ -12,8 +12,8 @@ app.use(express.static("public"))
 app.use(cookieParser())
 
 
-app.use(express.json()) // for parsing application/json
-app.use(express.urlencoded({ extended: true }))
+// app.use(express.json()) // for parsing application/json
+// app.use(express.urlencoded({ extended: true }))
 // routes imports
 // app.use(express.json())
 import userRouter from './routes/user.routes.js'
