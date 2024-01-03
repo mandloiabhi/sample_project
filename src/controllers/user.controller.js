@@ -23,7 +23,7 @@ const generateAccessTokenandRefreshToken= async (Userid) =>
 
 
 
-const registerUser = asyncHandler( async (Userid) => {
+const registerUser = asyncHandler( async () => {
     // get user details from frontend
     // validation - not empty
     // check if user already exists: username, email
@@ -129,6 +129,12 @@ const loginUser= asyncHandler(async (req,res)=>{
    
 })
 
+const logoutUser= asyncHandler(async (req,res)=>{
 
+    // remove cookies that were send to user as by loginUser function which can be updated by only server only
+    // second thing we have to remove or erase accesstoken and refresh token from server
+    
+
+})
 
 export {registerUser,loginUser};

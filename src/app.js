@@ -9,7 +9,7 @@ app.use(cors())
 app.use( express.json( {limit : "16kb"}))   // it says i am accepting json from request 
 app.use(express.urlencoded({limit:"16kb",extended:true}))   // it is saying for how use accept data from url
 app.use(express.static("public"))
-app.use(cookieParser())
+app.use(cookieParser())   // this is very important  now this is middleware  
 
 
 // app.use(express.json()) // for parsing application/json
