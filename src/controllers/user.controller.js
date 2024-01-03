@@ -134,17 +134,22 @@ const logoutUser= asyncHandler(async (req,res)=>{
 
     // remove cookies that were send to user as by loginUser function which can be updated by only server only
     // second thing we have to remove or erase accesstoken and refresh token from server
-    await User.findByIdAndUpdate(
-        req.user._id,
-        {
-            $set: {
-                refreshToken: undefined
-            }
-        },
-        {
-            new: true
-        }
-    )
+
+    const user= await User.findById(req.user._id);
+    user.refreshToken=undefined;
+    await user.save({validateBeforeSave: false});
+
+    // await User.findByIdAndUpdate(
+    //     req.user._id,
+    //     {
+    //         $set: {
+    //             refreshToken: undefined
+    //         }
+    //     },
+    //     {
+    //         new: true
+    //     }
+    // )
 
     const options = {
         httpOnly: true,
