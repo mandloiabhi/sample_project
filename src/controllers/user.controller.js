@@ -17,13 +17,14 @@ const generateAccessTokenandRefreshToken= async (Userid) =>
 
   } catch (error) 
   {
+    console.log(error)
     throw new ApiError(500,"SOME thing wrong in while geneating refresh and access token");
   }
 }
 
 
 
-const registerUser = asyncHandler( async () => {
+const registerUser = asyncHandler( async (req,res) => {
     // get user details from frontend
     // validation - not empty
     // check if user already exists: username, email
@@ -114,9 +115,9 @@ const loginUser= asyncHandler(async (req,res)=>{
    {
     throw new ApiError("400","password is wrong")
    }
-
+   
    const {accessToken,refreshToken}= await generateAccessTokenandRefreshToken(user._id);
-
+   console.log("abhijeet singh mandloi");
    const loggedInUser= await User.findById(user._id).select("-password -refresToken");  // return user object / doc with not having password and refresTOken field 
 
 

@@ -1,6 +1,6 @@
 import mongoose,{Schema} from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
-import  Jwt  from "jsonwebtoken";
+import  jwt  from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 
