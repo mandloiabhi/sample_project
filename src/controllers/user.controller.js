@@ -3,6 +3,7 @@ import {ApiError} from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
 import { ApiResponse}  from "../utils/ApiResponse.js";
 import {JobSeeker} from "../models/jobseekers.model.js"
+import { JobPoster } from "../models/jobposter.model.js";
 const generateAccessTokenandRefreshToken= async (Userid) =>
 {
 
@@ -216,4 +217,44 @@ const registerJobSeeker=asyncHandler(async(req,res)=>{
 
 })
 
-export {registerUser,loginUser,logoutUser,registerJobSeeker};
+const registerJobPoster=asyncHandler(async(req,res)=>
+{
+    const { CompanyName} = req.body
+    //console.log("email: ", email);
+    
+    console.log(req.body)
+    // if (
+    //     [workexperience,education, resume].some((field) => field?.trim() === "")
+    // ) {
+    //     throw new ApiError(400, "All fields are required")
+    // }
+    const user= await User.findById(req.user._id);
+    if(!user)
+    {
+        throw new ApiError(400, "user is primarily not registered")
+    }
+    const Userid=user._id;
+   const jobposter= await JobPoster.findOne({Userid});
+   if(jobposter)
+   {
+     throw new ApiError(400,"user is already registered as jobseeker")
+   }
+
+   const jobposter_user = await JobPoster.create({
+   
+    CompanyName: CompanyName,
+    Userid: Userid
+    })
+
+    const createdUser_asjobposter = await JobPoster.findById(jobposter_user._id)
+
+    if (!createdUser_asjobposter) {
+        throw new ApiError(500, "Something went wrong while registering the user as  jobposter_user in database")
+    }
+
+    return res.status(201).json(
+        new ApiResponse(200, "this is data of regeister jobposter", "User registered Successfully")
+    )
+})
+
+export {registerUser,loginUser,logoutUser,registerJobSeeker,registerJobPoster};

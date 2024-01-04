@@ -15,9 +15,9 @@ const JobPosterSchema= new Schema(
     },
     CompanyName:
     {
-      type:string,
+      type:String,
       required: true,
-      index: true,
+      
     },
     refreshToken:
     {
