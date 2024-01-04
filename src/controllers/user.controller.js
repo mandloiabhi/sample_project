@@ -176,12 +176,13 @@ const registerJobSeeker=asyncHandler(async(req,res)=>{
 
     const { workexperience,education, resume,skills} = req.body
     //console.log("email: ", email);
+    
     console.log(req.body)
-    if (
-        [workexperience,education, resume].some((field) => field?.trim() === "")
-    ) {
-        throw new ApiError(400, "All fields are required")
-    }
+    // if (
+    //     [workexperience,education, resume].some((field) => field?.trim() === "")
+    // ) {
+    //     throw new ApiError(400, "All fields are required")
+    // }
     const user= await User.findById(req.user._id);
     if(!user)
     {
@@ -203,7 +204,7 @@ const registerJobSeeker=asyncHandler(async(req,res)=>{
     Userid: Userid
     })
 
-    const createdUser_asjobseeker = await User.findById(jobseeker_user._id)
+    const createdUser_asjobseeker = await JobSeeker.findById(jobseeker_user._id)
 
     if (!createdUser_asjobseeker) {
         throw new ApiError(500, "Something went wrong while registering the user as  jobseeker_user in database")
