@@ -18,7 +18,7 @@ const JobSeekersSchema= new Schema(
     ],
     workexperience:{
         type: Number,
-        Prev_Company: [String,'NA'],
+      //  Prev_Company: [String,'NA'],
         
     },
     Userid:
@@ -27,14 +27,14 @@ const JobSeekersSchema= new Schema(
         ref:"User"
 
     },
-    Education:
+    education:
     {
         type:String,
     },
-    refreshToken:
-    {
-    type: String,
-    },
+    // refreshToken:
+    // {
+    // type: String,
+    // },
 
 }
 ,

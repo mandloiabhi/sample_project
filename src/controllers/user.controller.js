@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import {ApiError} from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
 import { ApiResponse}  from "../utils/ApiResponse.js";
+import {JobSeeker} from "../models/jobseekers.model.js"
 const generateAccessTokenandRefreshToken= async (Userid) =>
 {
 
@@ -164,4 +165,54 @@ const logoutUser= asyncHandler(async (req,res)=>{
 
 })
 
-export {registerUser,loginUser,logoutUser};
+const registerJobSeeker=asyncHandler(async(req,res)=>{
+    // get data from request
+    // check condition of all data got or not
+    // get user object access
+    // check wether logged in or not // but already check in middleware
+    // check wether user is already registered or not
+    // put entry in jobseeker collection
+    // take care of user_id
+
+    const { workexperience,education, resume,skills} = req.body
+    //console.log("email: ", email);
+    console.log(req.body)
+    if (
+        [workexperience,education, resume].some((field) => field?.trim() === "")
+    ) {
+        throw new ApiError(400, "All fields are required")
+    }
+    const user= await User.findById(req.user._id);
+    if(!user)
+    {
+        throw new ApiError(400, "user is primarily not registered")
+    }
+    const Userid=user._id;
+   const jobseeker= await JobSeeker.findOne({Userid});
+   if(jobseeker)
+   {
+     throw new ApiError(400,"user is already registered as jobseeker")
+   }
+
+   const jobseeker_user = await JobSeeker.create({
+   
+    workexperience :workexperience,
+    education: education,
+    resume: resume,
+    skills: skills,
+    Userid: Userid
+    })
+
+    const createdUser_asjobseeker = await User.findById(jobseeker_user._id)
+
+    if (!createdUser_asjobseeker) {
+        throw new ApiError(500, "Something went wrong while registering the user as  jobseeker_user in database")
+    }
+
+    return res.status(201).json(
+        new ApiResponse(200, "this is data of regeister jobseeker", "User registered Successfully")
+    )
+
+})
+
+export {registerUser,loginUser,logoutUser,registerJobSeeker};
