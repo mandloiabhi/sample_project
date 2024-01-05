@@ -5,6 +5,7 @@ import { logoutUser } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { registerJobSeeker } from "../controllers/user.controller.js";
 import { registerJobPoster } from "../controllers/user.controller.js";
+import { createJob } from "../controllers/user.controller.js";
 const router= Router();
 
 router.route("/register").post(registerUser)
@@ -15,4 +16,5 @@ router.route("/login").post(loginUser)
 router.route("/logout").post(verifyJWT,  logoutUser)
 router.route("/jobseeker").post(verifyJWT,registerJobSeeker)
 router.route("/jobposter").post(verifyJWT,registerJobPoster)
+router.route("/createJob").post(verifyJWT,createJob);
 export default router;

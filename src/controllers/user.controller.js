@@ -292,13 +292,13 @@ const createJob=asyncHandler(async(req,res)=>
 
     const company_name=jobposter.CompanyName;
 
-    const jobposter_user = await JobPoster.create({
+    const jobposter_user = await Job.create({
    
        
         JobPosterid:jobposter_id ,
         title:title,
         company:company_name,
-        startDatetoappl:startDatetoapply,
+        startDatetoapply:startDatetoapply,
         lastDatetoapply:lastDatetoapply,
         skillsRequired:skillsRequired
 

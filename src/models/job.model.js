@@ -15,13 +15,13 @@ const JobSchema= new Schema(
     },
     title:
     {
-      type:string,
+      type:String,
       required: true,
       
     },
     company:
     {
-        type:string,
+        type:String,
         required:true,
     },
     startDatetoapply:{
