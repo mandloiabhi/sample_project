@@ -4,6 +4,9 @@ import { User } from "../models/user.model.js";
 import { ApiResponse}  from "../utils/ApiResponse.js";
 import {JobSeeker} from "../models/jobseekers.model.js"
 import { JobPoster } from "../models/jobposter.model.js";
+import { Job } from "../models/job.model.js";
+
+
 const generateAccessTokenandRefreshToken= async (Userid) =>
 {
 
@@ -257,4 +260,15 @@ const registerJobPoster=asyncHandler(async(req,res)=>
     )
 })
 
-export {registerUser,loginUser,logoutUser,registerJobSeeker,registerJobPoster};
+const createJob=asyncHandler(async(req,res)=>
+{
+    // get the user object who is creating the jobs
+    // check wether user is jobposter or not
+    // get the jobposterid from the jobposter schema with help of user id which is foreign key in jobposter schema
+    // similary get company name from it
+    // be careful of about start date and end date
+    // then create the entry of the job in job database
+
+
+})
+export {registerUser,loginUser,logoutUser,registerJobSeeker,registerJobPoster,createJob};
