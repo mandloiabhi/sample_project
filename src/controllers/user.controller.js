@@ -282,9 +282,36 @@ const createJob=asyncHandler(async(req,res)=>
     {
         throw new ApiError(400,"you are not registered as job poster")
     }
+    const Userid=user._id;
+    const jobposter=await JobPoster.findOne({Userid})
+    if(!jobposter)
+    {
+        throw new ApiError(400,"user does not exits in jobposter database")
+    }
+    const jobposter_id=jobposter._id;
 
+    const company_name=jobposter.CompanyName;
+
+    const jobposter_user = await JobPoster.create({
+   
+       
+        JobPosterid:jobposter_id ,
+        title:title,
+        company:company_name,
+        startDatetoappl:startDatetoapply,
+        lastDatetoapply:lastDatetoapply,
+        skillsRequired:skillsRequired
+
+        })
     
-
+    if(!jobposter_user)
+    {
+        throw new ApiError(400,"Something went wrong while entrying in job in database")
+    }
+    
+    return res.status(201).json(
+        new ApiResponse(200, "this is data of entry of job", "job created successfully")
+    )
 
 
 })
