@@ -268,6 +268,23 @@ const createJob=asyncHandler(async(req,res)=>
     // similary get company name from it
     // be careful of about start date and end date
     // then create the entry of the job in job database
+     
+    const {startDatetoapply,title,lastDatetoapply,skillsRequired} = req.body
+
+    console.log(req.body)
+    const user= await User.findById(req.user._id);
+    if(!user)
+    {
+        throw new ApiError(400, "job poster is not registered as user ")
+    }
+    
+    if(user.role!=="jobposter")
+    {
+        throw new ApiError(400,"you are not registered as job poster")
+    }
+
+    
+
 
 
 })
