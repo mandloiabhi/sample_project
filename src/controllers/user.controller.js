@@ -322,7 +322,7 @@ const availableJobs=asyncHandler(async(req,res)=>
     // then get array of skill from user
     // write a query to get all job id's where  skill required is subset of user id jobs
     // return the array of job id's   // in later part we can pass the object json some attributes
-
+    console.log(req.body)
     const user= await User.findById(req.user._id);
     if(!user)
     {
@@ -343,21 +343,16 @@ const availableJobs=asyncHandler(async(req,res)=>
    
     const skillsofuser=jobseeker.skills;
 
-    //const givenArray = ["apple", "banana", "orange", "grape"];
-  const query = { "skillsRequired": { $all: skillsofuser } };
-
-  // Perform the query and store the result
-  //const collection = db.collection('yourCollection');
-  Job.find(query).toArray((err, result) => {
-    if (err) {
-       throw new ApiError(400,"error in queringing")
-    }
-    }
-  )
-    // Do something with the result (e.g., print or process it)
-    console.log(result);
-
-
+ 
+    console.log(skillsofuser);
+    
+   const result= await Job.find({
+        skillsRequired: {
+          $all: skillsofuser 
+        }
+      });
+      console.log(result);
+   
     return res.status(201).json(
         new ApiResponse(200, result, "job created successfully")
     )
