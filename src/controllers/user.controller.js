@@ -315,4 +315,53 @@ const createJob=asyncHandler(async(req,res)=>
 
 
 })
-export {registerUser,loginUser,logoutUser,registerJobSeeker,registerJobPoster,createJob};
+
+const availableJobs=asyncHandler(async(req,res)=>
+{
+    // get the user id 
+    // then get array of skill from user
+    // write a query to get all job id's where  skill required is subset of user id jobs
+    // return the array of job id's   // in later part we can pass the object json some attributes
+
+    const user= await User.findById(req.user._id);
+    if(!user)
+    {
+        throw new ApiError(400, "job poster is not registered as user ")
+    }
+    
+    if(user.role!=="jobseeker")
+    {
+        throw new ApiError(400,"you are not registered as job poster")
+    }
+    
+    const Userid=user._id;
+    const jobseeker=await JobSeeker.findOne({Userid})
+    if(!jobseeker)
+    {
+        throw new ApiError(400,"user does not exits in jobposter database")
+    }
+   
+    const skillsofuser=jobseeker.skills;
+
+    //const givenArray = ["apple", "banana", "orange", "grape"];
+  const query = { "skillsRequired": { $all: skillsofuser } };
+
+  // Perform the query and store the result
+  //const collection = db.collection('yourCollection');
+  Job.find(query).toArray((err, result) => {
+    if (err) {
+       throw new ApiError(400,"error in queringing")
+    }
+    }
+  )
+    // Do something with the result (e.g., print or process it)
+    console.log(result);
+
+
+    return res.status(201).json(
+        new ApiResponse(200, result, "job created successfully")
+    )
+
+
+})
+export {registerUser,loginUser,logoutUser,registerJobSeeker,registerJobPoster,createJob,availableJobs};
