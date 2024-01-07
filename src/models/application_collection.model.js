@@ -21,16 +21,12 @@ const ApplicationSchema= new Schema(
     },
     status:
     {
-      type:string,
+      type:String,
       required: true,
 
       
     },
-    dateapplied:
-    {
-        type: Date,
-        required:true,
-    },
+    
     refreshToken:
     {
     type: String,

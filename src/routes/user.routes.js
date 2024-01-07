@@ -7,6 +7,7 @@ import { registerJobSeeker } from "../controllers/user.controller.js";
 import { registerJobPoster } from "../controllers/user.controller.js";
 import { createJob } from "../controllers/user.controller.js";
 import { availableJobs } from "../controllers/user.controller.js";
+import { applytoJob } from "../controllers/user.controller.js";
 const router= Router();
 
 router.route("/register").post(registerUser)
@@ -19,4 +20,5 @@ router.route("/jobseeker").post(verifyJWT,registerJobSeeker)
 router.route("/jobposter").post(verifyJWT,registerJobPoster)
 router.route("/createJob").post(verifyJWT,createJob);
 router.route("/availableJobs").post(verifyJWT,availableJobs)
+router.route("/applyjob").post(verifyJWT,applytoJob)
 export default router;

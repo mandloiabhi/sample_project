@@ -5,6 +5,7 @@ import { ApiResponse}  from "../utils/ApiResponse.js";
 import {JobSeeker} from "../models/jobseekers.model.js"
 import { JobPoster } from "../models/jobposter.model.js";
 import { Job } from "../models/job.model.js";
+import { Application } from "../models/application_collection.model.js";
 
 
 const generateAccessTokenandRefreshToken= async (Userid) =>
@@ -359,4 +360,59 @@ const availableJobs=asyncHandler(async(req,res)=>
 
 
 })
-export {registerUser,loginUser,logoutUser,registerJobSeeker,registerJobPoster,createJob,availableJobs};
+const applytoJob=asyncHandler(async(req,res)=>{
+
+    // get the user object
+    // get the job id also
+    // check if user is already applied or not
+    // create entry for application collection
+    const { jobid} = req.body
+
+    const user= await User.findById(req.user._id);
+    if(!user)
+    {
+        throw new ApiError(400, "user is primarily not registered")
+    }
+    const Userid=user._id;
+
+    const jobseeker= await JobSeeker.findById(Userid);
+
+    if(!jobseeker)
+    {
+        throw new ApiError(400,"user is not registered as jobseeker")
+    }
+
+    const jobseekerId=jobseeker._id;
+
+   const result=Application.find({
+        "Jobid": jobid,
+        "JobSeekerid": jobseekerId
+      })
+      
+    if(result)
+    {
+        throw new ApiError(400,"you have already applied for this job");
+    }  
+
+
+    const Application_instance = await Application.create({
+   
+        Jobid:jobid,
+        JobSeekerid:jobseekerId,
+        status:"applied",
+        
+        })
+
+    if(!Application_instance)
+    {
+        throw new ApiError(400,"application instance is not created due to some problem")
+    }    
+
+    return res.status(201).json(
+        new ApiResponse(200, "applied_successfully", "applied successfully")
+    )
+
+
+
+})
+export {registerUser,loginUser,logoutUser,registerJobSeeker,registerJobPoster,createJob,availableJobs,applytoJob};
