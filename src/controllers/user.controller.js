@@ -448,4 +448,42 @@ const appliedJobStatus=asyncHandler(async(req,res)=>
     )
 
 })
-export {registerUser,loginUser,logoutUser,registerJobSeeker,registerJobPoster,createJob,availableJobs,applytoJob,appliedJobStatus};
+const removeJobByJobProvider=asyncHandler(async(req,res)=>{
+    const { jobid} = req.body;
+    const user= await User.findById(req.user._id);
+    if(!user)
+    {
+        throw new ApiError(400, "user is primarily not registered")
+    }
+    const Userid=user._id;
+
+    const jobposter= await JobPoster.findOne({Userid});
+    //console.log(jobseeker)
+    if(!jobposter)
+    {
+        throw new ApiError(400,"user is not registered as jobposter")
+    }
+
+   const jobposterrId=jobposter._id;
+
+  Application.updateMany(
+    {
+      "status": "applied",
+      "Jobid":jobid
+      // Add more conditions as needed
+    },
+    {
+      $set: {
+        "status": "rejected"
+        // Add more fields to update as needed
+      }
+    }
+  )
+
+  return res.status(201).json(
+    new ApiResponse(200, "removed jobs", 'job is removed and application db is updated')
+)
+
+
+})
+export {registerUser,loginUser,logoutUser,registerJobSeeker,registerJobPoster,createJob,availableJobs,applytoJob,appliedJobStatus,removeJobByJobProvider};
