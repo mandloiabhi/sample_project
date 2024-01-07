@@ -367,16 +367,16 @@ const applytoJob=asyncHandler(async(req,res)=>{
     // check if user is already applied or not
     // create entry for application collection
     const { jobid} = req.body
-
+    console.log(jobid)
     const user= await User.findById(req.user._id);
     if(!user)
     {
         throw new ApiError(400, "user is primarily not registered")
     }
     const Userid=user._id;
-
-    const jobseeker= await JobSeeker.findById(Userid);
-
+    console.log(Userid)
+    const jobseeker= await JobSeeker.findOne({Userid});
+    //console.log(jobseeker)
     if(!jobseeker)
     {
         throw new ApiError(400,"user is not registered as jobseeker")
@@ -384,12 +384,12 @@ const applytoJob=asyncHandler(async(req,res)=>{
 
     const jobseekerId=jobseeker._id;
 
-   const result=Application.find({
+   const result= await Application.find({
         "Jobid": jobid,
         "JobSeekerid": jobseekerId
       })
-      
-    if(result)
+    const len=result.length;
+    if(len)
     {
         throw new ApiError(400,"you have already applied for this job");
     }  
