@@ -415,4 +415,37 @@ const applytoJob=asyncHandler(async(req,res)=>{
 
 
 })
-export {registerUser,loginUser,logoutUser,registerJobSeeker,registerJobPoster,createJob,availableJobs,applytoJob};
+const appliedJobStatus=asyncHandler(async(req,res)=>
+{
+    const user= await User.findById(req.user._id);
+    if(!user)
+    {
+        throw new ApiError(400, "user is primarily not registered")
+    }
+    const Userid=user._id;
+
+    const jobseeker= await JobSeeker.findOne({Userid});
+    //console.log(jobseeker)
+    if(!jobseeker)
+    {
+        throw new ApiError(400,"user is not registered as jobseeker")
+    }
+
+   const jobseekerId=jobseeker._id;
+
+   const result= await Application.find({
+        "JobSeekerid": jobseekerId
+      },
+      {
+        "_id": 0,  // Exclude the _id field if you don't want it
+        "Jobid": 1,
+        "status": 1
+        // Add more fields you want to include with 1 or exclude with 0
+      })
+    
+    return res.status(201).json(
+        new ApiResponse(200, result, 'job ids that user applied and their status')
+    )
+
+})
+export {registerUser,loginUser,logoutUser,registerJobSeeker,registerJobPoster,createJob,availableJobs,applytoJob,appliedJobStatus};
