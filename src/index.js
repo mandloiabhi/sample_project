@@ -13,3 +13,8 @@ connectDB()
 .catch((err)=>{
     console.log(`database connection error `,err);
 })
+
+
+// app.listen(process.env.PORT || 8000,()=>{
+//     console.log(`server is start running on ${process.env.PORT}`)
+// })
