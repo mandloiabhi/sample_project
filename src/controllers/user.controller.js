@@ -161,7 +161,7 @@ const logoutUser= asyncHandler(async (req,res)=>{
         httpOnly: true,
         secure: true
     }
-
+    console.log("logout success")
     return res
     .status(200)
     .clearCookie("accessToken", options)
@@ -323,7 +323,7 @@ const availableJobs=asyncHandler(async(req,res)=>
     // then get array of skill from user
     // write a query to get all job id's where  skill required is subset of user id jobs
     // return the array of job id's   // in later part we can pass the object json some attributes
-    console.log(req.body)
+    
     const user= await User.findById(req.user._id);
     if(!user)
     {
@@ -345,17 +345,42 @@ const availableJobs=asyncHandler(async(req,res)=>
     const skillsofuser=jobseeker.skills;
 
  
-    console.log(skillsofuser);
-    
+    //console.log(skillsofuser);
+    const JobSeekerid=jobseeker._id;
+    const applied_job_applications=await Application.find({JobSeekerid:JobSeekerid});
+    const array_job=[];
+    //console.log(typeof applied_job_applications)
+    applied_job_applications.forEach(element => {
+
+        array_job.push(element.Jobid)
+    });
+    console.log(array_job)
    const result= await Job.find({
         skillsRequired: {
           $all: skillsofuser 
-        }
+        },
+        _id: { $nin: array_job }
       });
-      console.log(result);
+    const list_array=[]
+   // console.log(typeof result)
+    result.forEach(element => {
+
+        const lastDatetoapply=element.lastDatetoapply;
+        const company=element.company;
+        const title=element.title;
+        const id_string=String(element._id);
+        const ret={
+            "ending_date":lastDatetoapply,
+            "company":company,
+            "title":title,
+            "job_id":id_string
+        }
+        list_array.push(ret)
+    }); 
    
+
     return res.status(201).json(
-        new ApiResponse(200, result, "job created successfully")
+        new ApiResponse(200, list_array, "job created successfully")
     )
 
 
@@ -389,6 +414,7 @@ const applytoJob=asyncHandler(async(req,res)=>{
         "JobSeekerid": jobseekerId
       })
     const len=result.length;
+    console.log(len)
     if(len)
     {
         throw new ApiError(400,"you have already applied for this job");
