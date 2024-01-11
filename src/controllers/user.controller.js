@@ -109,7 +109,7 @@ const loginUser= asyncHandler(async (req,res)=>{
     {
         throw new ApiError("400","user name is required to log in");
     }
-
+    console.log(req.body)
     const  user= await User.findOne({username});
     if(!user)
     {
