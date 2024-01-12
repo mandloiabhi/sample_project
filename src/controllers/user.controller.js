@@ -468,9 +468,24 @@ const appliedJobStatus=asyncHandler(async(req,res)=>
         "status": 1
         // Add more fields you want to include with 1 or exclude with 0
       })
-    
+      const list_array=[]
+      // console.log(typeof result)
+       result.forEach(element => {
+   
+           const temp_obj=findOne({"_id":element.Jobid})
+           const company=temp_obj.company;
+           const title=temp_obj.title;
+           const id_string=String(element.Jobid);
+           const ret={
+               "status":element.status,
+               "company":company,
+               "title":title,
+               "job_id":id_string
+           }
+           list_array.push(ret)
+       });
     return res.status(201).json(
-        new ApiResponse(200, result, 'job ids that user applied and their status')
+        new ApiResponse(200, list_array, 'job ids that user applied and their status')
     )
 
 })
