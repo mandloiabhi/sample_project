@@ -458,7 +458,7 @@ const appliedJobStatus=asyncHandler(async(req,res)=>
     }
 
    const jobseekerId=jobseeker._id;
-
+   console.log(jobseekerId)
    const result= await Application.find({
         "JobSeekerid": jobseekerId
       },
@@ -468,22 +468,30 @@ const appliedJobStatus=asyncHandler(async(req,res)=>
         "status": 1
         // Add more fields you want to include with 1 or exclude with 0
       })
-      const list_array=[]
-      // console.log(typeof result)
-       result.forEach(element => {
-   
-           const temp_obj=findOne({"_id":element.Jobid})
-           const company=temp_obj.company;
-           const title=temp_obj.title;
-           const id_string=String(element.Jobid);
-           const ret={
-               "status":element.status,
-               "company":company,
-               "title":title,
-               "job_id":id_string
-           }
-           list_array.push(ret)
-       });
+    const list_array=[]
+    console.log(result)
+    
+    async function yourAsyncFunction() {
+        // Assuming result is an array
+        await Promise.all(result.map(async (element) => {
+            const temp_obj = await Job.findById(element.Jobid);
+            console.log(temp_obj);
+            const company = temp_obj.company;
+            const title = temp_obj.title;
+            const id_string = String(element.Jobid);
+            const ret = {
+                "status": element.status,
+                "company": company,
+                "title": title,
+                "job_id": id_string
+            };
+            list_array.push(ret);
+        }));
+    }
+    
+    // Call the async function
+   await yourAsyncFunction();
+    //console.log(list_array)
     return res.status(201).json(
         new ApiResponse(200, list_array, 'job ids that user applied and their status')
     )
